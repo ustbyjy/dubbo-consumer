@@ -13,10 +13,9 @@ public class ConsumerTestLoadBalance {
         context.start();
         logger.info("服务开始运行...");
 
-        Thread.sleep(3000);
-
-        DemoService demoService = (DemoService) context.getBean("demoService"); // 获取远程服务代理
-        String hello = demoService.sayHello("world"); // 执行远程方法
-        logger.info(hello); // 显示调用结果
+        for (int i = 0; i < 100; i++) {
+            DemoService demoService = (DemoService) context.getBean("demoService");
+            logger.info(demoService.sayHello("Tom"));
+        }
     }
 }
