@@ -2,10 +2,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://code.alibabatech.com/schema/dubbo
-       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:dubbo.properties" />
 
     <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
     <dubbo:application name="consumer-of-hello-world-app" />
@@ -14,12 +19,13 @@
     <!--<dubbo:registry address="multicast://224.5.6.7:1234" />-->
 
     <!-- 使用zookeeper注册中心暴露服务地址 -->
-    <!--<dubbo:registry address="zookeeper://10.236.40.159:2181" />-->
+    <dubbo:registry address="${dubbo.registry.zookeeper}" />
 
     <!-- 使用redis注册中心暴露服务地址，另外一种写法 -->
-    <dubbo:registry protocol="redis" address="10.236.40.159" port="6379" />
+    <!--<dubbo:registry protocol="redis" address="10.236.40.159" port="6379" />-->
 
     <!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
     <!-- dubbo 缺省会在启动时检查依赖的服务是否可用，不可用时会抛出异常，阻止 Spring 初始化完成，以便上线时，能及早发现问题，默认 check="true" -->
-    <dubbo:reference id="demoService" interface="com.yjy.provider.service.DemoService" check="true" />
+    <!-- 引用缺省是延迟初始化的，所以启动时检查需要设置init="true"，饥饿加载，才有效果 -->
+    <dubbo:reference id="demoService" interface="com.yjy.provider.service.DemoService" init="true" check="true" loadbalance="roundrobin" />
 </beans>
