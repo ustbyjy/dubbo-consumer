@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:dubbo.properties" />
+
+    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+    <dubbo:application name="consumer-of-hello-world-app" />
+
+    <!-- 使用multicast广播注册中心暴露服务地址 -->
+    <!--<dubbo:registry address="multicast://224.5.6.7:1234" />-->
+
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry address="${dubbo.registry.zookeeper}" />
+
+    <!-- 使用redis注册中心暴露服务地址，另外一种写法 -->
+    <!--<dubbo:registry protocol="redis" address="10.236.40.159" port="6379" />-->
+
+    <!-- retries属性设置重试次数 -->
+    <!--<dubbo:reference id="demoService" interface="com.yjy.provider.service.DemoService" check="false" loadbalance="roundrobin" timeout="1000" retries="2" />-->
+    <!-- 快速失败，只发起一次调用，失败立即报错，阻止程序运行 -->
+    <!--<dubbo:reference id="demoService" interface="com.yjy.provider.service.DemoService" check="false" loadbalance="roundrobin" timeout="1000" cluster="failfast" />-->
+    <!-- 失败安全，出现异常时，直接忽略，不阻止程序运行 -->
+    <!--<dubbo:reference id="demoService" interface="com.yjy.provider.service.DemoService" check="false" loadbalance="roundrobin" timeout="1000" cluster="failsafe" />-->
+    <!-- 失败自动恢复，后台记录失败请求，定时重发，与设置retries不同的是，还会重试上次的地址，而不是走负载均衡 -->
+    <dubbo:reference id="demoService" interface="com.yjy.provider.service.DemoService" check="false" loadbalance="roundrobin" timeout="1000" cluster="failback" />
+
+</beans>
