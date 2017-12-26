@@ -9,7 +9,7 @@ public class ConsumerTestMultiVersion {
     private static Logger logger = LoggerFactory.getLogger(ConsumerTestMultiVersion.class);
 
     public static void main(String[] args) throws Exception {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:dubbo-consumer.xml"});
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:dubbo-consumer-version.xml"});
         context.start();
         logger.info("服务开始运行...");
 

@@ -27,5 +27,7 @@
     <!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
     <!-- dubbo 缺省会在启动时检查依赖的服务是否可用，不可用时会抛出异常，阻止 Spring 初始化完成，以便上线时，能及早发现问题，默认 check="true" -->
     <!-- 引用缺省是延迟初始化的，所以启动时检查需要设置init="true"，饥饿加载，才有效果 -->
-    <dubbo:reference id="demoService" interface="com.yjy.provider.service.DemoService" init="true" check="true" />
+    <dubbo:reference id="demoService" interface="com.yjy.provider.service.DemoService" init="true" check="true" version="1.0.0" />
+
+    <dubbo:reference id="demoService2" interface="com.yjy.provider.service.DemoService" init="true" check="true" version="2.0.0" />
 </beans>

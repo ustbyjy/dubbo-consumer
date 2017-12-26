@@ -9,7 +9,7 @@ public class ConsumerTestLoadBalance {
     private static Logger logger = LoggerFactory.getLogger(ConsumerTestLoadBalance.class);
 
     public static void main(String[] args) throws Exception {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:dubbo-consumer.xml"});
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:dubbo-consumer-lb.xml"});
         context.start();
         logger.info("服务开始运行...");
 
